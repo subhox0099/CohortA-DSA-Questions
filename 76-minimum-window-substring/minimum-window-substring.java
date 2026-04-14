@@ -1,0 +1,43 @@
+class Solution {
+    public String minWindow(String s, String t) {
+
+        int[] map = new int[128];
+
+        for (char c : t.toCharArray()) {
+            map[c]++;
+        }
+
+        int left = 0, right = 0;
+        int minlen = Integer.MAX_VALUE;
+        int count = t.length();
+        int start = 0;
+
+        while (right < s.length()) {
+
+            if (map[s.charAt(right)] > 0) {
+                count--;
+            }
+
+            map[s.charAt(right)]--;
+            right++;
+
+            while (count == 0) {
+
+                if (right - left < minlen) {
+                    minlen = right - left;
+                    start = left;
+                }
+
+                map[s.charAt(left)]++;
+
+                if (map[s.charAt(left)] > 0) {
+                    count++;
+                }
+
+                left++;
+            }
+        }
+
+        return minlen == Integer.MAX_VALUE ? "" : s.substring(start, start + minlen);
+    }
+}
